@@ -1,0 +1,11 @@
+#feign:
+#  client:
+#    feign-bean-names: ${feign.client.rule-srv:rule-srv}
+#    rule-srv: rule-srv
+#  hystrix:
+#    enabled: true
+#ribbon.eureka.enable: true
+
+#tpl-service:
+#  ribbon:
+#    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule

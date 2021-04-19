@@ -1,0 +1,31 @@
+nacos:
+  config:
+    #开启自动刷新
+    auto-refresh: true
+    bootstrap:
+      enable: true
+      log-enable: true
+    # 主配置 data-id
+    data-id: user-service-config.properties
+    # 主配置 group-id
+    group: user_group
+    # nacos主配置服务器地址
+    server-addr: 10.153.6.13:8848
+    # 命名空间
+#    namespace:c2c06e20-5c02-46e0-a362-f5e47eba7312
+    # 主配置 配置文件类型
+    type: properties
+  discovery:
+    # 自动注册到nacos服务上
+    auto-register: true
+    # 主配置 group-id
+    group: ${nacos.config.group}
+    # nacos主配置服务器地址
+    server-addr: ${nacos.config.server-addr}
+    cluster-name: goddess_center
+    register:
+      port: ${server.port}
+      cluster-name: goddess_0
+      service-name: ${spring.application.name}
+
+

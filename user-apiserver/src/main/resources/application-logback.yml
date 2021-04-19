@@ -1,0 +1,20 @@
+logging:
+  center-user:
+    path: /home/center/logs
+  level:
+    com:
+      goddess:
+        center:
+          user:
+            infrastructure:
+              persistence:
+                dao: debug
+#  registry:
+#    files:
+#      - description: 标准输出
+#        name: info
+#        path: /home/center/logs/center/user/info.log
+#      - description: 错误输出
+#        name: error
+#        path: /home/center/logs/center/user/error.log
+

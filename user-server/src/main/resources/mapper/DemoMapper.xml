@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.goddess.center.user.infrastructure.persistence.dao.DemoMapper">
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.goddess.center.user.infrastructure.persistence.po.DemoPo" id="demoMap">
+        <id property="id" column="id"/>
+        <result property="localDate" column="local_date"/>
+        <result property="localTime" column="local_time"/>
+        <result property="localDateTime" column="local_date_time"/>
+        <result property="retailPrice" column="retail_price"/>
+        <result property="purchasePrice" column="purchase_price"/>
+        <result property="wholesalePrice" column="wholesale_price"/>
+        <result property="remarks" column="remarks"/>
+        <result property="deleted" column="deleted"/>
+        <result property="createUserId" column="create_user_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="modifyUserId" column="modify_user_id"/>
+        <result property="modifyTime" column="modify_time"/>
+    </resultMap>
+    <sql id="demoColumns">
+        ${alias}.id, ${alias}.local_date, ${alias}.local_time, ${alias}.local_date_time, ${alias}.retail_price,
+        ${alias}.purchase_price, ${alias}.wholesale_price, ${alias}.remarks, ${alias}.deleted, ${alias}.create_user_id,
+        ${alias}.create_time, ${alias}.modify_user_id, ${alias}.modify_time
+    </sql>
+</mapper>

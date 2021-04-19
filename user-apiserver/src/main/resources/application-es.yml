@@ -1,0 +1,4 @@
+spring:
+  elasticsearch:
+    host: 10.153.6.13:9200
+

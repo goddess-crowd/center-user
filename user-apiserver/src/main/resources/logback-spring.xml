@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="true" >
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <!-- 彩色日志 -->
+    <!-- 彩色日志依赖的渲染类 -->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+<!--    <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />-->
+<!--    <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />-->
+
+    <springProperty scope="context" name="logDir" source="logging.center-user.path" defaultValue="logs"/>
+    <springProperty scope="context" name="appName" source="spring.application.name"/>
+    <springProperty scope="context" name="logstashUrl" source="goddess.logstash.url" defaultValue="10.153.6.13:4560"/>
+    <springProperty scope="context" name="port" source="server.port"/>
+    <conversionRule conversionWord="ip" converterClass="com.goddess.common.trace.LogIpConfig" />
+
+    <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度 %msg：日志消息，%n是换行符 [%thread] -->
+    <property name="pattern" value="%d{yyyy-MM-dd HH:mm:ss:SSS} %clr(%level) [%thread] %logger.%M (l=%L\\) - %msg%n"/>
+
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>
+    <appender name="SYSTEM_ERROR_FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${logDir}/${app.name}/error.log</File>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${logDir}/history/${app.name}/error.%d{yyyy-MM-dd}.%i</fileNamePattern>
+            <maxHistory>14</maxHistory>
+            <maxFileSize>20MB</maxFileSize>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${pattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="SYSTEM_INFO_FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${logDir}/${app.name}/info.log</File>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${logDir}/history/${app.name}/info.%d{yyyy-MM-dd}.%i</fileNamePattern>
+            <maxHistory>14</maxHistory>
+            <maxFileSize>20MB</maxFileSize>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${pattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!--LogStash访问host-->
+    <!--输出到logstash的appender-->
+    <appender name="logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <!--可以访问的logstash日志收集端口-->
+        <destination>${logstashUrl}</destination>
+<!--        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder"/>-->
+        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp>
+                    <timeZone>UTC</timeZone>
+                </timestamp>
+                <pattern>
+                    <pattern>
+                        {
+                        "host":"%ip:${port}",
+                        "severity": "%level",
+                        "service": "${appName}",
+                        "thread": "%thread",
+                        "trace": "%X{traceId}",
+                        "class": "%logger.%M (l=%L)",
+                        "message": "%message"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+
+        </encoder>
+    </appender>
+
+    <logger name="com.goddess.center.user.infrastructure.persistence.dao" level="debug" />
+    <logger name="com.goddess.center.user.infrastructure.acl.feign" level="debug" />
+    <root level="info">
+        <appender-ref ref="console" />
+        <appender-ref ref="logstash"/>
+    </root>
+</configuration>

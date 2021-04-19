@@ -1,0 +1,24 @@
+goddess:
+  ip-replace:
+    #打包的时候要设置ip替换为false，本地启动为 true
+    enable: true
+    num: 100
+  xxl-job:
+    enable: false
+  swagger:
+    basePackage: com.goddess
+    title: 用户中心
+    description: 女神帮-用户中心
+    contact:
+      name: 失败女神
+      url: https://blog.csdn.net/qq_30615201/article/details/90747742
+      email: 18733123202@163.com
+  logstash:
+    url: 10.153.6.13:4560
+  minio:
+    enable: false
+    endpoint: http://10.153.6.13:9000
+    accessKey: minio
+    secretKey: goddess_root
+#    filHost: http://file.songshijun.top
+

@@ -1,0 +1,21 @@
+server:
+  #服务端口
+  port: 12003
+  servlet:
+    context-path: /user
+spring:
+  application:
+    #服务名称
+    name: user-service
+  servlet:
+    multipart:
+      max-file-size: 50MB #单个文件大小
+      max-request-size: 500MB # 一个次请求中上传文件的总容量的限制
+  profiles:
+    #指明环境是开发环境
+    active: dev
+    #导入其他yml文件
+    include: goddess,datasource,mybatisplus,redis,xxljob,nacos,actuator,feign,rocketmq
+
+
+

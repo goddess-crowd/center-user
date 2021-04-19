@@ -1,0 +1,4 @@
+rocketmq:
+  enable: true
+  namesrv-addr: 10.153.6.13:9876
+  producer-roup: userProducer
